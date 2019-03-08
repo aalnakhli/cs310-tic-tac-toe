@@ -1,50 +1,38 @@
 package edu.jsu.mcis;
 
-import java.util.Scanner;
-
 public class TicTacToeController {
 
-    private TicTacToeModel model;
-    private TicTacToeView view;
-    private Scanner keyboard;
-
+    private final TicTacToeModel model;
+    private final TicTacToeView view;
+    
     /* CONSTRUCTOR */
 
-    public TicTacToeController(TicTacToeModel model, TicTacToeView view) {
+    public TicTacToeController(int width) {
+        
+        /* Initialize model, view, and width */
 
-        /* Initialize model and view */
-
-        this.model = model;
-        this.view = view;
-
-        /* Initialize scanner (for console keyboard) */
-
-        keyboard = new Scanner(System.in);
-
+        model = new TicTacToeModel(width);
+        view = new TicTacToeView();
+        
     }
 
-    public void controlModel() {
+    public void start() {
+    
+        /* MAIN LOOP (repeats until game is over) */
 
-        /* Prompt player for next move using view's showNextMovePrompt() */
+        /* Display the board using the View's "showBoard()", then use
+           "getNextMove()" to get the next move from the player.  Enter
+           the move (using the Model's "makeMark()", or display an error
+           using the View's "showInputError()" if the move is invalid. */
 
-        view.showNextMovePrompt();
+        // INSERT YOUR CODE HERE
+        
+        /* After the game is over, show the final board and the winner */
 
-        /*
-         * Receive and validate input, which should be read at the keyboard as two
-         * integers, the row and the column (for example, "1 1" for the center square of
-         * a 3 x 3 grid). Make mark if input is valid, or show error message using
-         * view's showInputError() if input is invalid.
-         */
+        view.showBoard(model.toString());
 
-        /* INSERT YOUR CODE HERE */
-        boolean validInput = false;
-        while (!validInput) {
-            if (!model.makeMark(keyboard.nextInt(), keyboard.nextInt())) {
-                view.showInputError();
-                view.showNextMovePrompt();
-            } else {
-                validInput = true;
-            }
-        }
+        view.showResult(model.getResult().toString());
+        
     }
+
 }
