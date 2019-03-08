@@ -1,38 +1,50 @@
 package edu.jsu.mcis;
 
+import java.util.Scanner;
+
 public class TicTacToeController {
 
-    private final TicTacToeModel model;
-    private final TicTacToeView view;
-    
+    private TicTacToeModel model;
+    private TicTacToeView view;
+    private Scanner keyboard;
+
     /* CONSTRUCTOR */
 
-    public TicTacToeController(int width) {
-        
-        /* Initialize model, view, and width */
+    public TicTacToeController(TicTacToeModel model, TicTacToeView view) {
 
-        model = new TicTacToeModel(width);
-        view = new TicTacToeView();
-        
+        /* Initialize model and view */
+
+        this.model = model;
+        this.view = view;
+
+        /* Initialize scanner (for console keyboard) */
+
+        keyboard = new Scanner(System.in);
+
     }
 
-    public void start() {
-    
-        /* MAIN LOOP (repeats until game is over) */
+    public void controlModel() {
 
-        /* Display the board using the View's "showBoard()", then use
-           "getNextMove()" to get the next move from the player.  Enter
-           the move (using the Model's "makeMark()", or display an error
-           using the View's "showInputError()" if the move is invalid. */
+        /* Prompt player for next move using view's showNextMovePrompt() */
 
-        // INSERT YOUR CODE HERE
-        
-        /* After the game is over, show the final board and the winner */
+        view.showNextMovePrompt();
 
-        view.showBoard(model.toString());
+        /*
+         * Receive and validate input, which should be read at the keyboard as two
+         * integers, the row and the column (for example, "1 1" for the center square of
+         * a 3 x 3 grid). Make mark if input is valid, or show error message using
+         * view's showInputError() if input is invalid.
+         */
 
-        view.showResult(model.getResult().toString());
-        
+        /* INSERT YOUR CODE HERE */
+        boolean validInput = false;
+        while (!validInput) {
+            if (!model.makeMark(keyboard.nextInt(), keyboard.nextInt())) {
+                view.showInputError();
+                view.showNextMovePrompt();
+            } else {
+                validInput = true;
+            }
+        }
     }
-
 }
