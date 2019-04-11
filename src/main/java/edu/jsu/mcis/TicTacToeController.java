@@ -1,50 +1,85 @@
 package edu.jsu.mcis;
 
-import java.util.Scanner;
+
 
 public class TicTacToeController {
 
-    private TicTacToeModel model;
-    private TicTacToeView view;
-    private Scanner keyboard;
+
+
+    private final TicTacToeModel model;
+
+    private final TicTacToeView view;
+
+    
 
     /* CONSTRUCTOR */
 
-    public TicTacToeController(TicTacToeModel model, TicTacToeView view) {
 
-        /* Initialize model and view */
 
-        this.model = model;
-        this.view = view;
+    public TicTacToeController(int width) {
 
-        /* Initialize scanner (for console keyboard) */
+        
 
-        keyboard = new Scanner(System.in);
+        /* Initialize model, view, and width */
+
+
+
+        model = new TicTacToeModel(width);
+
+        view = new TicTacToeView();
+
+        
 
     }
 
-    public void controlModel() {
 
-        /* Prompt player for next move using view's showNextMovePrompt() */
 
-        view.showNextMovePrompt();
+    public void start() {
 
-        /*
-         * Receive and validate input, which should be read at the keyboard as two
-         * integers, the row and the column (for example, "1 1" for the center square of
-         * a 3 x 3 grid). Make mark if input is valid, or show error message using
-         * view's showInputError() if input is invalid.
-         */
+    
 
-        /* INSERT YOUR CODE HERE */
-        boolean validInput = false;
-        while (!validInput) {
-            if (!model.makeMark(keyboard.nextInt(), keyboard.nextInt())) {
-                view.showInputError();
-                view.showNextMovePrompt();
-            } else {
-                validInput = true;
-            }
+        /* MAIN LOOP (repeats until game is over) */
+
+
+
+        /* Display the board using the View's "showBoard()", then use
+
+           "getNextMove()" to get the next move from the player.  Enter
+
+           the move (using the Model's "makeMark()", or display an error
+
+           using the View's "showInputError()" if the move is invalid. */
+
+
+
+        while(!model.isGameover()){
+
+            view.showBoard(model.toString());
+
+            TicTacToeMove move = view.getNextMove(model.isXTurn());
+
+            if(!model.makeMark(move.getRow(), move.getCol()));
+
+            view.showInputError();
+
         }
+
+        
+
+        /* After the game is over, show the final board and the winner */
+
+
+
+        view.showBoard(model.toString());
+
+
+
+        view.showResult(model.getResult().toString());
+
+        
+
     }
+
+
+
 }
