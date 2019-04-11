@@ -1,272 +1,675 @@
 package edu.jsu.mcis;
 
+
+
 public class TicTacToeModel {
 
-    private static final int DEFAULT_WIDTH = 3;
+    
+
+    private Mark[][] board; /* Game board */
+
+    private boolean xTurn;  /* True if X is current player */
+
+    private int width;      /* Size of game board */
+
+    /* ENUM TYPE DEFINITIONS */
+
+    
 
     /* Mark (represents X, O, or an empty square */
 
+    
+
     public enum Mark {
 
-        X("X"), O("O"), EMPTY("-");
+        
+
+        X("X"), 
+
+        O("O"), 
+
+        EMPTY("-");
+
+
 
         private String message;
 
+        
+
         private Mark(String msg) {
+
             message = msg;
+
         }
 
+        
+
         @Override
+
         public String toString() {
+
             return message;
+
         }
+
+        
 
     };
 
-    /*
-     * Result (represents the final state of the game: X wins, O wins, a tie, or
-     * NONE if the game is not yet over)
-     */
+    
+
+    /* Result (represents the final state of the game: X wins, O wins, a TIE,
+
+       or NONE if the game is not yet over) */
+
+    
 
     public enum Result {
 
-        X("X"), O("O"), TIE("Tie"), NONE("none");
+        
+
+        X("X"), 
+
+        O("O"), 
+
+        TIE("TIE"), 
+
+        NONE("NONE");
+
+
 
         private String message;
 
+        
+
         private Result(String msg) {
+
             message = msg;
+
         }
 
+        
+
         @Override
+
         public String toString() {
+
             return message;
+
         }
+
+        
 
     };
 
-    private Mark[][] grid; /* Game grid */
-    private boolean xTurn; /* True if X is current player */
-    private int width; /* Size of game grid */
-
-    /* DEFAULT CONSTRUCTOR */
-
-    public TicTacToeModel() {
-
-        /* No arguments (call main constructor; use default size) */
-
-        this(DEFAULT_WIDTH);
-
-    }
+    
 
     /* CONSTRUCTOR */
 
+    
+
+    public TicTacToeModel() {
+
+        
+
+        this(TicTacToe.DEFAULT_WIDTH);
+
+        
+
+    }
+
+    
+
+    /* CONSTRUCTOR */
+
+    
+
     public TicTacToeModel(int width) {
+
+        
 
         /* Initialize width; X goes first */
 
+        
+
         this.width = width;
+
         xTurn = true;
 
-        /* Create grid (width x width) as a 2D Mark array */
+        
 
-        /* INSERT YOUR CODE HERE */
-        grid = new Mark[width][width];
+        /* Create board (width x width) as a 2D Mark array */
 
-        /* Initialize grid by filling every square with empty marks */
+        
 
-        /* INSERT YOUR CODE HERE */
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < width; j++) {
-                grid[i][j] = Mark.EMPTY;
+        board = new Mark[width][width];
+
+
+
+        /* Initialize board by filling every square with empty marks */
+
+        
+
+        for (int i=0; i < width; i++){
+
+            for (int j =0; j < width; j++){
+
+                board[i][j] = Mark.EMPTY;
+
             }
+
         }
+
+        
+
     }
+
+	
 
     public boolean makeMark(int row, int col) {
 
-        /*
-         * Place the current player's mark in the square at the specified location, but
-         * only if the location is valid and if the square is empty!
-         */
+        
 
-        /* INSERT YOUR CODE HERE */
-        if ((!isSquareMarked(row, col)) && (isValidSquare(row, col)) && xTurn) {
-            grid[row][col].equals(Mark.X);
-            xTurn = false;
-            return true;
-        }
+        /* Use "isValidSquare()" to check if the specified location is in range,
 
-        else if ((!isSquareMarked(row, col)) && (isValidSquare(row, col)) && !xTurn) {
-            grid[row][col].equals(Mark.O);
-            xTurn = true;
-            return true;
-        }
+           and use "isSquareMarked()" to see if the square is empty!  If the
 
-        else {
+           specified location is valid, make a mark for the current player, then
+
+           toggle "xTurn" from true to false (or vice-versa) to switch to the
+
+           other player before returning TRUE.  Otherwise, return FALSE. */
+
+        
+
+        
+
+        if (isValidSquare(row,col) == false){
+
             return false;
+
         }
+
+        else if (isSquareMarked(row,col) == true){
+
+            return false;
+
+        }
+
+        else{
+
+            if (isXTurn() == true){
+
+                board[row][col] = Mark.X;
+
+                xTurn = false;
+
+            }
+
+            else if (isXTurn() == false){
+
+                board[row][col] = Mark.O;
+
+                xTurn = true;
+
+            }
+
+            return true;
+
+        }
+
+        
 
     }
+
+	
 
     private boolean isValidSquare(int row, int col) {
 
-        /* Return true if specified location is within grid bounds */
+        
 
-        /* INSERT YOUR CODE HERE */
-        if ((row < width) && (row >= 0) && (col < width) && (col >= 0)) {
+        /* Return TRUE if the specified location is within the bounds of the board */
+
+        
+
+        if ((-1 < row) && (row < width) && (-1 < col) && (col < width)){ 
+
             return true;
+
         }
 
-        else {
+
+
+        else{
+
             return false;
+
         }
+
+        
 
     }
+
+	
 
     private boolean isSquareMarked(int row, int col) {
 
-        /* Return true if square at specified location is marked */
+        
 
-        /* INSERT YOUR CODE HERE */
-        return (grid[row][col] != Mark.EMPTY);
+        /* Return TRUE if the square at specified location is marked */
+
+        
+
+        if (board[row][col] != Mark.EMPTY){
+
+            return true;
+
+        }
+
+
+
+        else{
+
+            return false;
+
+        }
+
+            
 
     }
+
+	
 
     public Mark getMark(int row, int col) {
 
-        /* Return mark from the square at the specified location */
+        
 
-        /* INSERT YOUR CODE HERE */
-        return grid[row][col];
+        /* Return the mark from the square at the specified location */
+
+        
+
+        return board[row][col];          
 
     }
+
+	
 
     public Result getResult() {
 
-        /*
-         * Use isMarkWin() to see if X or O is the winner, if the game is a tie, or if
-         * the game is not over, and return the corresponding Result value
-         */
+        
 
-        /* INSERT YOUR CODE HERE */
-        if (isMarkWin(Mark.X)) {
+        /* Call "isMarkWin()" to see if X or O is the winner, if the game is a
+
+           TIE, or if the game is not over.  Return the corresponding Result
+
+           value */
+
+        
+
+        if ((isMarkWin(Mark.X) == true)){
+
             return Result.X;
+
         }
 
-        else if (isMarkWin(Mark.O)) {
+        
+
+        else if (isMarkWin(Mark.O) == true){
+
             return Result.O;
+
+            
+
         }
 
-        else if (isTie()) {
+
+
+        else if (isTie() == true){
+
             return Result.TIE;
+
         }
 
-        else {
-            return Result.O;
+                
+
+        else{
+
+            return Result.NONE;
+
         }
+
+
+
+        
 
     }
+
+	
 
     private boolean isMarkWin(Mark mark) {
 
-        /*
-         * Check the squares of the board to see if the specified mark is the winner
-         */
+        
 
-        /* INSERT YOUR CODE HERE */
-        boolean win = true;
+        /* Check the squares of the board to see if the specified mark is the
 
-        // rows
-        int j;
-        for (int i = 0; i < width; i++) {
-            win = true;
-            for (j = 0; j < width; j++) {
-                if (!grid[i][j].equals(mark)) {
-                    win = false;
+           winner */
+
+        
+
+        int vertical = 0;
+
+           int horizontal = 0;
+
+           int downDiagonal = 0;
+
+           int upDiagonal = 0;
+
+       
+
+        // check rows
+
+        
+
+        for (int i=0; i < width; i++){
+
+            if (horizontal != width){
+
+                horizontal = 0;
+
+                for (int j=0; j < width; j++){
+
+                    if(board[i][j] == mark){
+
+                        horizontal = horizontal + 1;
+
+                    }
+
                 }
+
             }
-            if (win) {
-                return true;
-            }
+
         }
 
-        // columns
-        int k;
-        for (int p = 0; p < width; p++) {
-            win = true;
-            for (k = 0; k < width; k++) {
-                if (!grid[k][p].equals(mark)) {
-                    win = false;
+
+
+        // check columns
+
+        
+
+        for (int j=0; j < width; j++){
+
+            if (vertical != width){
+
+                vertical = 0;
+
+                for (int i=0; i < width; i++){
+
+                    if(board[i][j] == mark){
+
+                        vertical = vertical + 1;
+
+                    }
+
                 }
+
             }
-            if (win) {
-                return true;
-            }
+
         }
 
-        // diagonal left to right
-        win = true;
-        for (int v = 0; v < width; v++) {
-            if (!grid[v][v].equals(mark)) {
-                win = false;
+
+
+        // check left diagonal
+
+      
+
+        for (int j = 0; j <width;j++){
+
+            if(board[j][j] == mark){
+
+                downDiagonal = downDiagonal + 1;
+
             }
+
         }
-        if (win) {
+
+
+
+        // check right diagonal
+
+       
+
+        for (int j = 0; j < width;j++){
+
+            if(board[j][width-j-1] == mark){
+
+                upDiagonal = upDiagonal + 1;
+
+            }
+
+        }
+
+        
+
+        // If the previous checks have a match, return a win
+
+        
+
+        if (vertical == width){
+
             return true;
+
         }
 
-        // Diagonal right to left
-        win = true;
-        for (int n = 0; n < width; n++) {
-            if (!grid[n][width - 1 - n].equals(mark)) {
-                win = false;
-            }
-        }
-        if (win) {
+        else if (horizontal == width){
+
             return true;
+
         }
 
-        return false;
+        else if (downDiagonal == width){
+
+            return true;
+
+        }
+
+        else if (upDiagonal == width){
+
+            return true;
+
+        }
+
+        else{
+
+            return false;
+
+        }
+
+
+
     }
+
+	
 
     private boolean isTie() {
 
+        
+
         /* Check the squares of the board to see if the game is a tie */
 
-        /* INSERT YOUR CODE HERE */
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < width; j++) {
-                if ((!isSquareMarked(i, j)) || (isMarkWin(grid[i][j]))) {
-                    return false;
+        
+
+        int count = 0;
+
+        
+
+        for (int i=0; i < width; i++){
+
+            for (int j=0; j < width; j++){
+
+                if (board[i][j] == Mark.EMPTY){
+
+                    count = count + 1;
+
                 }
+
             }
+
         }
-        return true;
+
+
+
+        if (count == 0){
+
+            return true;
+
+        }
+
+        else{
+
+            return false;
+
+        }
+
+        
+
     }
+
+
 
     public boolean isGameover() {
 
-        /* Return true if the game is over */
+        
 
-        return Result.NONE != getResult();
+        /* Return TRUE if the game is over */
+
+        
+
+        return (Result.NONE != getResult());
+
+        
 
     }
+
+
 
     public boolean isXTurn() {
 
+        
+
         /* Getter for xTurn */
+
+        
 
         return xTurn;
 
+        
+
     }
+
+
 
     public int getWidth() {
 
+        
+
         /* Getter for width */
+
+        
 
         return width;
 
+        
+
     }
+
+    
+
+    @Override
+
+    public String toString() {
+
+        
+
+        StringBuilder output = new StringBuilder("  ");
+
+        
+
+        /* Output the board contents as a string (see examples) */
+
+        
+
+           for (int i = 0; i < width; i++) {
+
+
+
+            output.append(i);
+
+        }
+
+
+
+        output.append("\n");
+
+               
+
+        for (int i = 0; i < width; i++) {
+
+
+
+            for (int j = 0; j < width; j++) {
+
+
+
+                if (j == 0) {
+
+
+
+                    output.append(i).append(" ").append(board[i][j]);
+
+
+
+                } else if (j > 0) {
+
+
+
+                    output.append(board[i][j]);
+
+
+
+                } 
+
+
+
+                
+
+
+
+                if (j == width - 1) {
+
+
+
+                    output.append("\n");
+
+
+
+                }
+
+
+
+            }
+
+
+
+        }
+
+        
+
+        return output.toString();
+
+        
+
+    }
+
+    
 
 }
